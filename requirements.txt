@@ -1,0 +1,50 @@
+# JobShield-Web: Software Requirements Specification (SRS)
+
+## 1. Executive Summary & Overview
+JobShield-Web is an AI-powered web application designed to analyze job postings and classify them as legitimate, suspicious, or high-risk scams. The application integrates natural language processing (NLP), keyword vector checking, domain analysis, and automated CV skill extraction to protect job seekers from fraudulent offers and streamline secure job searching.
+
+---
+
+## 2. Technology Stack Requirements
+
+### Frontend & UI
+* **HTML5**: Semantic web page structure.
+* **CSS3**: Pure CSS styling for layout, responsiveness, and dark/light themes.
+* **Jinja2**: Templating engine for server-side HTML rendering.
+* **JavaScript (Vanilla)**: Interactivity, form validation, and asynchronous requests.
+
+### Backend Framework & Core Libraries
+* **Python 3.10+**: Core programming language.
+* **Flask**: Lightweight WSGI web framework.
+* **Flask-Mail**: SMTP mail transport integration for OTP verification and user communication.
+* **Werkzeug**: Password hashing (PBKDF2/SHA256) and security helpers.
+
+### Artificial Intelligence & Data Processing
+* **Hugging Face Inference API**: `facebook/bart-large-mnli` model for zero-shot text classification.
+* **Scikit-Learn**: Machine learning utilities (`TfidfVectorizer`, `MultinomialNB`, `Pipeline`).
+* **PyPDF2**: Server-side parsing and text extraction from uploaded PDF resumes/CVs.
+* **BeautifulSoup4 & Requests**: Web scraping for external domain content verification and threat detection.
+* **ReportLab**: PDF report generation for analysis exports.
+
+### Database System
+* **MongoDB**: NoSQL database for flexible storage of user accounts and report histories.
+* **PyMongo / BSON**: Database driver and Object ID handling.
+
+---
+
+## 3. Python Package Requirements (`requirements.txt`)
+
+Below is the complete list of standard dependencies required to run the JobShield-Web system:
+
+```text
+Flask>=3.0.0
+Flask-Mail>=0.9.1
+pymongo>=4.6.0
+werkzeug>=3.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+PyPDF2>=3.0.0
+reportlab>=4.0.0
+scikit-learn>=1.3.0
+pandas>=2.1.0
+jinja2>=3.1.0
