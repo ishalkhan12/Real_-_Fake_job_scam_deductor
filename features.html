@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Features - JobShield Platform{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-3">
+    <div class="text-center mb-5">
+        <span class="badge bg-cyan px-3 py-2 rounded-pill mb-2">Technical Engine Architecture</span>
+        <h1 class="fw-bold">Advanced <span class="text-gradient">Processing Flows</span></h1>
+        <p class="text-light">How our intelligence frameworks scan text indicators on malicious listings.</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 text-center">
+                <div class="mx-auto bg-cyan text-dark rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height:50px; font-weight:700;">1</div>
+                <h5 class="fw-bold">Ingest Metadata</h5>
+                <p class="text-light small mb-0">System securely parses job details including text tiers, metadata descriptions, and linked profiles.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 text-center">
+                <div class="mx-auto bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height:50px; font-weight:700;">2</div>
+                <h5 class="fw-bold">Pattern Analysis</h5>
+                <p class="text-light small mb-0">Supervised Multinomial Naive Bayes pipelines instantly scan vectors to evaluate fraud risks.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 text-center">
+                <div class="mx-auto bg-success text-dark rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 50px; height:50px; font-weight:700;">3</div>
+                <h5 class="fw-bold">Report Dispatch</h5>
+                <p class="text-light small mb-0">Generates instant secure telemetry badges, risk scoring factors, and visual red-flags.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

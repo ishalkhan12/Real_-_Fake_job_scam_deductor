@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Center - JobShield</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/dashboard">
+                <i class="fa-solid fa-user-gear me-2"></i>JobShield Admin Console
+            </a>
+            <div>
+                <a href="/dashboard" class="btn btn-outline-light btn-sm px-3 me-2 shadow-sm">
+                    <i class="fa-solid fa-chart-line me-1"></i> Dashboard
+                </a>
+                <a href="/logout" class="btn btn-danger btn-sm px-3 shadow-sm">
+                    <i class="fa-solid fa-power-off me-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-2">
+        <div class="text-center mb-5">
+            <span class="badge bg-danger px-3 py-2 rounded-pill mb-2 fw-bold tracking-wider">Root Access Enabled</span>
+            <h1 class="fw-bold text-dark m-0">⚙️ Corporate Control Center</h1>
+            <p class="text-muted small">Global ecosystem statistics and enterprise operator accounts ledger management</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100 d-flex flex-column justify-content-center">
+                    <h5 class="fw-bold text-dark text-center mb-4">
+                        <i class="fa-solid fa-chart-pie text-danger me-2"></i>Scan Threat Spectrum
+                    </h5>
+                    <div style="position: relative; max-height: 260px;" class="mb-3">
+                        <canvas id="adminChart"></canvas>
+                    </div>
+                    <div class="mt-3 p-3 bg-light rounded-3 text-center">
+                        <span class="text-secondary small d-block fw-semibold">Total Dynamic Scans</span>
+                        <span class="fs-4 fw-bold text-primary">{{ total_reports if total_reports else 0 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+                        <h5 class="fw-bold text-dark m-0">
+                            <i class="fa-solid fa-users text-primary me-2"></i>Registered System Operators
+                        </h5>
+                        <div class="input-group style-search-bar" style="max-width: 280px;">
+                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted small"></i></span>
+                            <input type="text" id="searchUser" class="form-control border-start-0 bg-light form-control-sm" placeholder="Filter operators by text...">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                        <table class="table table-hover align-middle m-0" id="userTable">
+                            <thead class="table-dark sticky-top">
+                                <tr>
+                                    <th scope="col" class="py-3">Name</th>
+                                    <th scope="col" class="py-3">Identity Email</th>
+                                    <th scope="col" class="py-3 text-end">Action Control</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if all_users %}
+                                    {% for user in all_users %}
+                                        <tr>
+                                            <td class="fw-bold text-dark">
+                                                <i class="fa-solid fa-circle-user text-secondary me-2"></i>{{ user['name'] }}
+                                            </td>
+                                            <td class="text-secondary text-monospace small">{{ user['email'] }}</td>
+                                            <td class="text-end">
+                                                <a href="/delete-user/{{ user['email'] }}" 
+                                                   class="btn btn-outline-danger btn-sm px-3 rounded-pill fw-semibold"
+                                                   onclick="return confirm('Security Alert: Are you absolutely sure you want to terminate this operator account identity?')">
+                                                    <i class="fa-solid fa-trash-can me-1"></i> Terminate
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted py-4">
+                                            <i class="fa-solid fa-users-slash d-block fs-3 mb-2"></i> No managed operator logs present in system.
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 bg-dark text-white-50 mt-5">
+        <div class="container small">&copy; 2026 JobShield Root Architecture Control Panel.</div>
+    </footer>
+
+    <script>
+        const ctx = document.getElementById('adminChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Scam Profiles', 'Suspicious Case', 'Verified Safe'],
+                    datasets: [{
+                        data: [
+                            Number("{{ scam_reports if scam_reports else 0 }}"),
+                            Number("{{ suspicious_reports if suspicious_reports else 0 }}"),
+                            Number("{{ legit_reports if legit_reports else 0 }}")
+                        ],
+                        backgroundColor: [
+                            'rgba(220, 53, 69, 0.85)',
+                            'rgba(255, 193, 7, 0.85)',
+                            'rgba(25, 135, 84, 0.85)'
+                        ],
+                        borderColor: ['#ffffff', '#ffffff', '#ffffff'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } }
+                    }
+                }
+            });
+        }
+
+        // Live Real-Time JavaScript Table Search Filter
+        document.getElementById("searchUser").addEventListener("keyup", function() {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#userTable tbody tr");
+            
+            rows.forEach(row => {
+                if(row.querySelector('td')) { // Check if it's not the empty row
+                    let text = row.innerText.toLowerCase();
+                    row.style.display = text.includes(value) ? "" : "none";
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

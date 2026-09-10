@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}Contact Us - JobShield{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <div class="card p-4 p-md-5 border-0">
+                <h2 class="fw-bold mb-2">Get in Touch</h2>
+                <p class="text-light mb-4">Have questions about our AI detection systems? Drop us a message.</p>
+                <form action="/contact" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Your Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold">Corporate Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="john@company.com" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold">Message</label>
+                            <textarea name="message" class="form-control" rows="5" placeholder="How can our threat intelligence help you?" required></textarea>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-gradient btn-lg w-100"><i class="fa-solid fa-paper-plane me-2"></i>Dispatch Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <h3 class="fw-bold mb-4"><i class="fa-solid fa-circle-question text-cyan me-2"></i>Frequent Queries</h3>
+            <div class="accordion shadow-sm" id="faqAccordion">
+                <div class="accordion-item border-0 mb-2 rounded-3 overflow-hidden">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How accurate is the ML Model?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Our platform leverages supervised Multinomial Naive Bayes pipelines integrated with high-density TF-IDF vectors, delivering production-grade pattern assessment.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

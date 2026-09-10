@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}Settings - JobShield{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-3">
+    <div class="card shadow-lg border-0 p-4 p-md-5 mx-auto animate-fade-up" style="max-width: 600px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 16px;">
+        
+        <h2 class="fw-bold text-white mb-4">
+            <i class="fa-solid fa-gear text-cyan me-2"></i>User Settings
+        </h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-success py-2 px-3 small border-0 shadow-sm mb-4" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981 !important; color: #6ee7b7;">
+                        <i class="fa-solid fa-circle-check me-2"></i>{{ msg }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/settings" method="POST">
+            <!-- Full Name Field -->
+            <div class="mb-3">
+                <label class="form-label text-light opacity-90 fw-semibold">Full Name</label>
+                <input type="text" name="name" class="form-control text-white border-0 py-2 px-3" value="{{ user.name }}" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.15) !important; border-radius: 8px;">
+            </div>
+
+            <!-- Email Field (Disabled) -->
+            <div class="mb-3">
+                <label class="form-label text-light opacity-90 fw-semibold">Email <small class="text-secondary opacity-75">(Cannot be changed)</small></label>
+                <input type="email" class="form-control text-light opacity-50 border-0 py-2 px-3" value="{{ user.email }}" disabled style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 8px; cursor: not-allowed;">
+            </div>
+
+            <!-- New Password Field -->
+            <div class="mb-4">
+                <label class="form-label text-light opacity-90 fw-semibold">New Password <span class="small opacity-75 fw-normal">(optional)</span></label>
+                <input type="password" name="new_password" class="form-control text-white border-0 py-2 px-3" placeholder="Leave blank to keep same" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.15) !important; border-radius: 8px;">
+            </div>
+
+            <!-- Save Button -->
+            <button type="submit" class="btn btn-cyan w-100 fw-bold py-2 shadow-sm">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

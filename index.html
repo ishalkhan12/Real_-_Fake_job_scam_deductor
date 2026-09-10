@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block title %}JobShield - AI Powered Job Scam Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero text-center text-white py-5 mb-5">
+    <div class="container animate-fade-up">
+        <h1 class="fw-bold display-4">Protect Yourself From <span class="text-gradient">Fake Jobs</span></h1>
+        <p class="lead text-white-50">AI-powered fraud detection that analyzes job posts, company websites, and suspicious hiring patterns to keep you safe.</p>
+        <div class="mt-4">
+            <a href="#analyze" class="btn btn-primary btn-lg px-4 me-2">Start Analysis</a>
+            <a href="/about" class="btn btn-outline-light btn-lg px-4">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3 animate-fade-up" style="animation-delay: 0.1s;">
+                <div class="card p-4 border-0">
+                    <h2 class="fw-bold text-info">10K+</h2>
+                    <p class="text-light mb-0">Jobs Ingested</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="card p-4 border-0">
+                    <h2 class="fw-bold text-success">95%</h2>
+                    <p class="text-light mb-0">Detection Accuracy</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="card p-4 border-0">
+                    <h2 class="fw-bold text-danger">500+</h2>
+                    <p class="text-light mb-0">Scam Reports</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-fade-up" style="animation-delay: 0.4s;">
+                <div class="card p-4 border-0">
+                    <h2 class="fw-bold text-info">24/7</h2>
+                    <p class="text-light mb-0">Threat Protection</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Analysis Form -->
+<section id="analyze" class="py-5">
+    <div class="container">
+        <div class="card p-4 p-md-5 mx-auto" style="max-width: 800px;">
+            <h3 class="fw-bold text-center mb-4"><i class="fa-solid fa-magnifying-glass-chart text-info me-2"></i>Analyze Job Indicators</h3>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for msg in messages %}
+                  <div class="alert alert-danger text-center py-2 mb-3">{{ msg }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <!-- CV Scanner Section -->
+            <div class="p-4 rounded-3 mb-4" style="background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.2);">
+                <h5 class="fw-bold mb-2 text-info"><i class="fa-solid fa-file-pdf text-success me-2"></i>AI Skills & LinkedIn Job Matcher</h5>
+                <p class="text-light small mb-3">Apni CV (PDF) upload karein. AI aapki CV se skills extract karke matched LinkedIn job search link tayyar kar dega.</p>
+                <form id="cvForm" action="/" method="POST" enctype="multipart/form-data">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-sm-8">
+                            <input type="file" name="cv_file" accept=".pdf" class="form-control" required>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" id="cvSubmitBtn" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-wand-magic-sparkles me-1"></i>Scan CV & Match
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Dynamic Results Overlay -->
+                {% if linkedin_link %}
+                    <div class="mt-4 p-3 rounded border-start border-success border-4" style="background: rgba(15, 23, 42, 0.9);">
+                        <h6 class="fw-bold text-success mb-2"><i class="fa-solid fa-circle-check me-2"></i>CV Scan Successfully Completed</h6>
+                        <p class="mb-2 text-light small fw-bold">Extracted Profile Skills:</p>
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            {% for skill in skills %}
+                                <span class="badge bg-info text-dark px-3 py-2 text-uppercase fw-bold">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="{{ linkedin_link }}" target="_blank" class="btn btn-success w-100 fw-bold">
+                            <i class="fa-brands fa-linkedin me-2"></i>View Matched Jobs on LinkedIn
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <hr class="my-4 border-light opacity-25">
+
+            <!-- Main Job Detector Form -->
+            <form id="analysisForm" action="/check" method="POST">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Job Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="e.g. Data Entry Specialist" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Company Website / Domain URL</label>
+                    <input type="url" name="website" class="form-control" placeholder="https://example.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Job Description</label>
+                    <textarea name="description" class="form-control" rows="5" placeholder="Paste full contextual indicators here..." required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Stated Salary Range <span class="text-muted">(Optional)</span></label>
+                    <input type="number" name="salary" class="form-control" placeholder="Offered Salary Amount in USD/PKR">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-lg w-100">
+                    <i class="fa-solid fa-shield-halved me-2"></i>Initialize Core Telemetry Scan
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Architecture Section -->
+<section class="container py-5">
+    <h2 class="text-center fw-bold mb-5">Data Processing <span class="text-gradient">Architecture</span></h2>
+    <div class="row g-4 text-center">
+        <div class="col-md-4 animate-fade-up" style="animation-delay: 0.1s;">
+            <div class="card p-4 h-100 border-0">
+                <div class="fs-1 text-info mb-2"><i class="fa-solid fa-file-import"></i></div>
+                <h5 class="fw-bold">Ingest Indicators</h5>
+                <p class="text-light small mb-0">Input job description tokens, salary ranges, and domain records.</p>
+            </div>
+        </div>
+        <div class="col-md-4 animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="card p-4 h-100 border-0">
+                <div class="fs-1 text-primary mb-2"><i class="fa-solid fa-brain"></i></div>
+                <h5 class="fw-bold">Neural Evaluation</h5>
+                <p class="text-light small mb-0">Supervised classification models decompose text against threat indicators.</p>
+            </div>
+        </div>
+        <div class="col-md-4 animate-fade-up" style="animation-delay: 0.3s;">
+            <div class="card p-4 h-100 border-0">
+                <div class="fs-1 text-success mb-2"><i class="fa-solid fa-square-poll-vertical"></i></div>
+                <h5 class="fw-bold">Threat Scoring</h5>
+                <p class="text-light small mb-0">Instantly generate scoreboards, metrics, and alerts with high accuracy.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('analysisForm').addEventListener('submit', function() {
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing Scam Metrics...';
+});
+
+document.getElementById('cvForm').addEventListener('submit', function() {
+    var btn = document.getElementById('cvSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Extracting & Matching...';
+});
+</script>
+{% endblock %}

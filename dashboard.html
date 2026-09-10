@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}Console Dashboard - JobShield{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-2">
+    <!-- Header Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+        <div>
+            <h2 class="fw-bold text-white m-0 animate-fade-up">Welcome, <span class="text-cyan fw-bold" style="color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);">{{ name }}</span></h2>
+            <p class="text-light opacity-75 small m-0" style="color: #cbd5e1 !important;">Security Metrics Control Panel</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/" class="btn btn-cyan shadow-sm fw-semibold"><i class="fa-solid fa-plus me-1"></i> New Scan</a>
+            <a href="/export-pdf" class="btn btn-outline-light shadow-sm fw-semibold" style="border-color: rgba(255, 255, 255, 0.3);"><i class="fa-solid fa-file-pdf me-1 text-danger"></i> Export Log</a>
+        </div>
+    </div>
+
+    <!-- Stats Metric Cards -->
+    <div class="row g-4 mb-5">
+        <!-- Total Scans -->
+        <div class="col-6 col-md-3 animate-fade-up" style="animation-delay: 0.1s;">
+            <div class="card border-0 shadow-sm p-3 p-md-4 text-center h-100" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 255, 255, 0.08) !important; border-radius: 12px; backdrop-filter: blur(8px);">
+                <div class="fs-2 mb-2" style="color: #00e5ff;"><i class="fa-solid fa-folder-open"></i></div>
+                <h3 class="fw-bold text-white m-0">{{ total_reports }}</h3>
+                <small class="text-light opacity-75 fw-semibold">Total Scans</small>
+            </div>
+        </div>
+
+        <!-- Scams Caught -->
+        <div class="col-6 col-md-3 animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="card border-0 shadow-sm p-3 p-md-4 text-center h-100" style="background: rgba(30, 41, 59, 0.7); border-left: 4px solid #ef4444 !important; border-top: 1px solid rgba(255, 255, 255, 0.08); border-right: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; backdrop-filter: blur(8px);">
+                <div class="fs-2 text-danger mb-2"><i class="fa-solid fa-bug"></i></div>
+                <h3 class="fw-bold text-danger m-0">{{ scam_reports }}</h3>
+                <small class="text-light opacity-75 fw-semibold">Scams Caught</small>
+            </div>
+        </div>
+
+        <!-- Suspicious -->
+        <div class="col-6 col-md-3 animate-fade-up" style="animation-delay: 0.3s;">
+            <div class="card border-0 shadow-sm p-3 p-md-4 text-center h-100" style="background: rgba(30, 41, 59, 0.7); border-left: 4px solid #f59e0b !important; border-top: 1px solid rgba(255, 255, 255, 0.08); border-right: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; backdrop-filter: blur(8px);">
+                <div class="fs-2 text-warning mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <h3 class="fw-bold text-warning m-0">{{ suspicious_reports }}</h3>
+                <small class="text-light opacity-75 fw-semibold">Suspicious</small>
+            </div>
+        </div>
+
+        <!-- Legitimate -->
+        <div class="col-6 col-md-3 animate-fade-up" style="animation-delay: 0.4s;">
+            <div class="card border-0 shadow-sm p-3 p-md-4 text-center h-100" style="background: rgba(30, 41, 59, 0.7); border-left: 4px solid #10b981 !important; border-top: 1px solid rgba(255, 255, 255, 0.08); border-right: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; backdrop-filter: blur(8px);">
+                <div class="fs-2 text-success mb-2"><i class="fa-solid fa-shield-check"></i></div>
+                <h3 class="fw-bold text-success m-0">{{ legit_reports }}</h3>
+                <small class="text-light opacity-75 fw-semibold">Legitimate</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="row g-4">
+        <div class="col-lg-8 mx-auto animate-fade-up" style="animation-delay: 0.5s;">
+            <div class="card border-0 shadow-lg p-4 rounded-4" style="background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1) !important;">
+                <h5 class="fw-bold text-white mb-4"><i class="fa-solid fa-chart-bar text-cyan me-2"></i>Scam Pattern Spectrum</h5>
+                <div style="position: relative; max-height: 380px;">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const canvas = document.getElementById("myChart");
+    if (canvas) {
+        new Chart(canvas, {
+            type: "bar",
+            data: {
+                labels: ["Scam Profiles", "Suspicious Files", "Safe Vectors"],
+                datasets: [{
+                    label: "Database Entry Signals",
+                    data: [
+                        Number("{{ scam_reports if scam_reports else 0 }}"),
+                        Number("{{ suspicious_reports if suspicious_reports else 0 }}"),
+                        Number("{{ legit_reports if legit_reports else 0 }}")
+                    ],
+                    backgroundColor: ['rgba(239, 68, 68, 0.85)', 'rgba(245, 158, 11, 0.85)', 'rgba(16, 185, 129, 0.85)'],
+                    borderColor: ['#EF4444', '#F59E0B', '#10B981'],
+                    borderWidth: 1.5,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { color: '#cbd5e1' },
+                        grid: { color: 'rgba(255, 255, 255, 0.08)' } 
+                    },
+                    x: { 
+                        ticks: { color: '#cbd5e1' },
+                        grid: { display: false } 
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

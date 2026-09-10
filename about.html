@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}About Us - JobShield Enterprise{% endblock %}
+
+{% block content %}
+<header class="hero text-center text-white py-5 mb-5">
+    <div class="container">
+        <span class="badge bg-white/10 text-white px-4 py-2 rounded-pill mb-3 border border-white/10">
+            <i class="fa-solid fa-shield-halved me-2"></i> Next-Gen Threat Intelligence
+        </span>
+        <h1 class="fw-bold display-4">Our Threat Intelligence <span class="text-gradient">Mission</span></h1>
+        <p class="lead text-white-50">Combating digital recruitment fraud through deep learning models.</p>
+    </div>
+</header>
+
+<section class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Our <span class="text-gradient">Architectural Pillars</span></h2>
+        <p class="text-light">Built on strict operational benchmarks to safeguard job seekers globally.</p>
+    </div>
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 animate-fade-up" style="animation-delay: 0.1s;">
+                <div class="mb-3 text-cyan fs-1"><i class="fa-solid fa-scale-balanced"></i></div>
+                <h5 class="fw-bold">Absolute Transparency</h5>
+                <p class="text-light small">Providing direct mathematical indicators behind every single classification score generated.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 animate-fade-up" style="animation-delay: 0.2s;">
+                <div class="mb-3 text-success fs-1"><i class="fa-solid fa-microchip"></i></div>
+                <h5 class="fw-bold">Continuous Innovation</h5>
+                <p class="text-light small">Our pipelines update text vector algorithms based on real-time cyber intelligence feeds.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 animate-fade-up" style="animation-delay: 0.3s;">
+                <div class="mb-3 text-warning fs-1"><i class="fa-solid fa-user-shield"></i></div>
+                <h5 class="fw-bold">User-Centric Support</h5>
+                <p class="text-light small">Dedicated response channels designed to process urgent malicious job listing removals.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container my-5 pt-4">
+    <div class="card p-5 text-center" style="background: linear-gradient(135deg, #0F172A, #1E293B); border: 1px solid var(--border);">
+        <h3 class="fw-bold mb-3">Ready to Protect Your Identity?</h3>
+        <p class="text-light mb-4">Run full-text job metadata verification checks instantly using our advanced AI scanner.</p>
+        <div>
+            <a href="/" class="btn btn-gradient btn-lg px-4"><i class="fa-solid fa-bolt me-2"></i>Initialize Core Engine</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
